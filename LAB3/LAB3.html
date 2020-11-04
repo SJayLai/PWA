@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+   <head>
+     <link rel="stylesheet" type="text/css" href="LAB2.css">
+     <link rel="manifest" href="manifest.json">
+
+   </head>
+   <body>
+     <button class="bleconnect">Search</button>   
+   </body>
+</html>
+<script>
+if('serviceWorker' in navigator) {
+         // window load後才執行，以免增加頁面讀取的時間
+        window.addEventListener('load', function() {
+      // 建立sw.js
+                navigator.serviceWorker.register('sw.js')
+                .then(function(reg) {
+                         console.log(reg.scope); // 看這支sw.js執行的範圍
+                 })
+        // 註冊失敗
+                 .catch(function(err) {
+                 console.log('error: ', err);
+                 });
+            // 附上刪除sw.js的寫法
+    });
+ }
+</script>
