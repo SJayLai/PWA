@@ -38,7 +38,7 @@ smoothie.streamTo(document.getElementById("mycanvas"));
   
 var line1 = new TimeSeries();
 
-console.log("helo3");   
+console.log("helo4");   
    
 function ecgchart(input_value){
 // Add a random value to each line every second
@@ -76,7 +76,7 @@ navigator.bluetooth.requestDevice({
            let ecgfromble = Array.from(new Uint8Array(this.value.buffer));
            console.log(ecgfromble);
            ecgfromble.forEach(ecgchart);
-         //  ecgchart(ecgfromble[1]);
+           ecgchart(ecgfromble[1]);
         // smoothie.addTimeSeries(line1);
 
         });
