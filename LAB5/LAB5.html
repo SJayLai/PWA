@@ -33,26 +33,12 @@ var timeconstant=0;
 
 smoothie.streamTo(document.getElementById("mycanvas"));
    
-     // Data
-var line1 = new TimeSeries();
-var line2 = new TimeSeries();
 
-// Add a random value to each line every second
-setInterval(function() {
-  timeconstant=timeconstant+1;
-  line1.append(new Date().getTime(), timeconstant);
-  line2.append(new Date().getTime(), timeconstant);
-}, 33);
 
-// Add to SmoothieChart
-smoothie.addTimeSeries(line1);
-smoothie.addTimeSeries(line2);
   
-// var line1 = new TimeSeries();
-// line1.append(new Date().getTime(), timeconstant);
-// timeconstant=timeconstant+1;
-// smoothie.addTimeSeries(line1);
-console.log("helo2");   
+var line1 = new TimeSeries();
+
+console.log("helo3");   
    
 function ecgchart(input_value){
 // Add a random value to each line every second
@@ -70,7 +56,7 @@ navigator.bluetooth.requestDevice({
     acceptAllDevices: true//
 })
 .then(device => {
-    console.log(device);
+      console.log(device);
       bluetoothDevice = device;
       bluetoothDevice.addEventListener('gattserverdisconnected', disconnected);
       return device.gatt.connect();
