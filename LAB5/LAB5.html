@@ -39,9 +39,10 @@ var line2 = new TimeSeries();
 
 // Add a random value to each line every second
 setInterval(function() {
-  line1.append(new Date().getTime(), Math.random());
-  line2.append(new Date().getTime(), Math.random());
-}, 1000);
+  timeconstant=timeconstant+1;
+  line1.append(new Date().getTime(), timeconstant=0);
+  line2.append(new Date().getTime(), timeconstant=0);
+}, 33);
 
 // Add to SmoothieChart
 smoothie.addTimeSeries(line1);
@@ -51,7 +52,7 @@ smoothie.addTimeSeries(line2);
 // line1.append(new Date().getTime(), timeconstant);
 // timeconstant=timeconstant+1;
 // smoothie.addTimeSeries(line1);
-console.log("helo1");   
+console.log("helo2");   
    
 function ecgchart(input_value){
 // Add a random value to each line every second
