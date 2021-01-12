@@ -30,12 +30,28 @@ if('serviceWorker' in navigator) {
  }
 smoothie = new SmoothieChart();
 var timeconstant=0;
+
 smoothie.streamTo(document.getElementById("mycanvas"));
+   
+     // Data
 var line1 = new TimeSeries();
-line1.append(new Date().getTime(), timeconstant);
-timeconstant=timeconstant+1;
+var line2 = new TimeSeries();
+
+// Add a random value to each line every second
+setInterval(function() {
+  line1.append(new Date().getTime(), Math.random());
+  line2.append(new Date().getTime(), Math.random());
+}, 1000);
+
+// Add to SmoothieChart
 smoothie.addTimeSeries(line1);
-console.log("helo");   
+smoothie.addTimeSeries(line2);
+  
+// var line1 = new TimeSeries();
+// line1.append(new Date().getTime(), timeconstant);
+// timeconstant=timeconstant+1;
+// smoothie.addTimeSeries(line1);
+console.log("helo1");   
    
 function ecgchart(input_value){
 // Add a random value to each line every second
