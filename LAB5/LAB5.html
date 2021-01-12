@@ -40,8 +40,8 @@ var line2 = new TimeSeries();
 // Add a random value to each line every second
 setInterval(function() {
   timeconstant=timeconstant+1;
-  line1.append(new Date().getTime(), timeconstant=0);
-  line2.append(new Date().getTime(), timeconstant=0);
+  line1.append(new Date().getTime(), timeconstant);
+  line2.append(new Date().getTime(), timeconstant);
 }, 33);
 
 // Add to SmoothieChart
