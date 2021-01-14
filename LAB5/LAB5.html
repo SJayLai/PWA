@@ -38,7 +38,7 @@ smoothie.streamTo(document.getElementById("mycanvas"));
   
 var line1 = new TimeSeries();
 
-console.log("helo1");   
+console.log("helo2");   
    
 function ecgchart(input_value){
 // Add a random value to each line every second
@@ -46,7 +46,7 @@ line1.append(new Date().getTime(), input_value);
 timeconstant=timeconstant+1;
 if(timeconstant%80==0){
     smoothie.addTimeSeries(line1);
-    print(new Date().getTime());
+    console.log(new Date().getTime());
    }
 // Add to SmoothieChart new Date().getTime()
 }
