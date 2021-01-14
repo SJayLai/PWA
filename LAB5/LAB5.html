@@ -38,15 +38,18 @@ smoothie.streamTo(document.getElementById("mycanvas"));
   
 var line1 = new TimeSeries();
 
-console.log("helo2");   
-   
+console.log("helo3");   
+var NowTime=0;
+var LastTime=0;   
 function ecgchart(input_value){
 // Add a random value to each line every second
 line1.append(new Date().getTime(), input_value);
 timeconstant=timeconstant+1;
 if(timeconstant%80==0){
     smoothie.addTimeSeries(line1);
-    console.log(new Date().getTime());
+    NowTime = new Date().getTime();
+    console.log(NowTime-LastTimer);
+    LastTimer = NowTime;
    }
 // Add to SmoothieChart new Date().getTime()
 }
