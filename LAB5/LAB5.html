@@ -1,0 +1,154 @@
+  
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="LAB2.css">
+		<link rel="manifest" href="manifest.json">          
+		<script src="smoothie.js" type="text/javascript"></script>
+
+	</head>
+	<body>
+		<button class="bleconnect" onclick="bleconnectfunc()">Search</button> 
+		<br><br><br><br>
+		<div style="float: left;">
+			<canvas id="myCanvas1" width="1250" height="256">
+				Your browser does not support the HTML canvas tag.
+			</canvas>
+		</div>
+
+		<div style="float: top; position:absolute;">
+			<canvas id="myCanvas2" width="1250" height="256">
+				Your browser does not support the HTML canvas tag.
+			</canvas>
+		</div>
+	</body>
+</html>
+
+<script>
+	if('serviceWorker' in navigator) {
+			// window load後才執行，以免增加頁面讀取的時間
+			window.addEventListener('load', function() {
+					// 建立sw.js
+					navigator.serviceWorker.register('sw.js')
+						.then(function(reg) {
+								console.log(reg.scope); // 看這支sw.js執行的範圍
+							})
+					// 註冊失敗
+						.catch(function(err) {
+								console.log('error: ', err);
+							});
+				});
+		}
+
+	// Parameters Initialization
+	var equDataRate = 333;   // Hz
+	var frameLength = 5; // Sec
+	var drawPointsUnit = 40; //points
+	var data = Array(equDataRate*frameLength);
+	var drawPointsIndex = 0;
+
+	// Get Canvas Object
+	var c1 = document.getElementById("myCanvas1");
+	var ctx1 = c1.getContext("2d");
+	var c2 = document.getElementById("myCanvas2");
+	var ctx2 = c2.getContext("2d");
+	ctx2.imageSmoothingEnabled = ctx2.mozImageSmoothingEnabled = ctx2.webkitImageSmoothingEnabled = false
+	ctx2.strokeStyle = "#09203f";
+	ctx2.lineWidth = 1;
+
+	drawBG();
+	drawGrid();
+
+
+	function ecgchart(input_value){
+			
+			data[drawPointsIndex] = input_value;
+			var x_value = drawPointsIndex*(c2.width/(equDataRate*frameLength));
+			ctx2.lineTo( x_value.toFixed(2) , data[drawPointsIndex]);
+			
+			//console.log( drawPointsIndex.toString()+" : "+x_value.toFixed(2).toString()+" , "+data[drawPointsIndex].toString() );
+			
+			if(drawPointsIndex%drawPointsUnit==drawPointsUnit-1) {
+					ctx2.clearRect(0, 0, c2.width, c2.height);
+					ctx2.stroke(); 
+			}
+
+			drawPointsIndex++;
+
+			// Turn around
+			if(drawPointsIndex >= data.length){
+					drawPointsIndex = 0;
+					ctx2.moveTo(0, 0);
+					ctx2.clearRect(0, 0, c2.width, c2.height);
+					ctx2.beginPath();
+					drawBG();
+					drawGrid();
+				}
+ 
+		}
+
+	function bleconnectfunc(){
+			navigator.bluetooth.requestDevice({
+					optionalServices: [0xa000],
+					//'713d0002-503e-4c75-ba94-3148f18d941e'
+					acceptAllDevices: true//
+				})
+				.then(device => {
+						console.log(device);
+						bluetoothDevice = device;
+						bluetoothDevice.addEventListener('gattserverdisconnected', disconnected);
+						return device.gatt.connect();
+					})
+				.then(server => {
+						return server.getPrimaryService(0xa000);
+					})
+				.then(service => {
+						console.log(service);
+						return service.getCharacteristic(0xa001);
+					})
+				.then(chara => {
+						console.log(chara);
+						let lock = true;
+						chara.startNotifications().then(c => {
+								c.addEventListener('characteristicvaluechanged', function(e){
+										let ecgfromble = Array.from(new Uint8Array(this.value.buffer));
+										//console.log(ecgfromble);
+										ecgfromble.forEach(ecgchart);
+									});
+							})
+					})
+				.catch(error => {console.log(error)});
+		};
+
+	function disconnected(event) {
+			console.log("Disconnected by remote device!");
+			bluetoothDevice = null;
+			connected = false;
+		}
+
+	// Draw Canvas BG
+	function drawBG() {
+			// Create gradient
+			var gradient = ctx1.createLinearGradient(0, 0, 0, 3*c1.height/2);
+			gradient.addColorStop(0, "#80d0c7");
+			gradient.addColorStop(1, "#13547a");
+
+			// Fill with gradient
+			ctx1.fillStyle = gradient;
+			ctx1.fillRect(0, 0, c1.width, c1.height);
+		}
+
+	function drawGrid() {
+			// Vertical Grid
+			ctx1.strokeStyle = "#D7FFFE";
+			ctx1.lineWidth = 1;
+			var vlu = c1.width/(5*frameLength);  // 0.2 sec
+			for(var vli = 0; vli <= 5*frameLength; vli++){
+					ctx1.moveTo(vli*vlu.toFixed(2)-1.0, 0);
+					ctx1.lineTo(vli*vlu.toFixed(2)-1.0, c1.height);
+					ctx1.stroke();
+				}
+		}
+
+
+</script>
