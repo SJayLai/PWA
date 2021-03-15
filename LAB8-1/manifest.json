@@ -1,6 +1,6 @@
 {
-    "short_name": "LAB4",
-    "name": "YuTech_PWA_LAB4",
+    "short_name": "LAB8",
+    "name": "YuTech_PWA_LAB8",
     "icons": [
         {
             "src": "title0.png",
@@ -13,7 +13,7 @@
             "sizes": "512x512"
         }
     ],
-    "start_url": "LAB5.html",
+    "start_url": "LAB8-1.html",
     "background_color": "#FFD1EA",
     "display": "standalone",
     "theme_color": "#FFD1EA",
