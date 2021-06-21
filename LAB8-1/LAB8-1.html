@@ -92,8 +92,9 @@
 	
 	function bleconnectfunc(){
 			navigator.bluetooth.requestDevice({
-					optionalServices: [0xa000],
+					optionalServices: ["0000a000-0000-1000-8000-00805f9b34fb"],
 					//'713d0002-503e-4c75-ba94-3148f18d941e'
+					//'0000a000-0000-1000-8000-00805f9b34fb'
 					acceptAllDevices: true//
 				})
 				.then(device => {
